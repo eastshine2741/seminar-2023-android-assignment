@@ -10,6 +10,9 @@
         <variable
             name="operator"
             type="String" />
+        <variable
+            name="result"
+            type="String" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -28,7 +31,7 @@
             android:id="@+id/id_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="@{user_id}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/user_text"/>
 
@@ -36,7 +39,7 @@
             android:id="@+id/pw_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="@{user_pw}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/id_text" />
 
@@ -66,9 +69,10 @@
             android:id="@+id/result_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="=aaa"
+            android:text="@{'='+result}"
             app:layout_constraintStart_toEndOf="@id/second_edittext"
-            app:layout_constraintBottom_toTopOf="@id/operator_grid" />
+            app:layout_constraintTop_toTopOf="@id/first_edittext"
+            app:layout_constraintBottom_toBottomOf="@id/first_edittext" />
 
         <GridLayout
             android:id="@+id/operator_grid"
@@ -87,7 +91,7 @@
                 android:layout_height="100dp"
                 android:background="#C0DDB8"
                 android:text="+"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="#FFFFFF" />
             <TextView
                 android:id="@+id/subtract_button"
@@ -95,7 +99,7 @@
                 android:layout_height="100dp"
                 android:background="#CF9523"
                 android:text="-"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="#FFFFFF"/>
             <TextView
                 android:id="@+id/multiply_button"
@@ -103,7 +107,7 @@
                 android:layout_height="100dp"
                 android:background="#D14F83"
                 android:text="*"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="#FFFFFF"/>
             <TextView
                 android:id="@+id/divide_button"
@@ -111,7 +115,7 @@
                 android:layout_height="100dp"
                 android:background="#5D3ABD"
                 android:text="/"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="#FFFFFF"/>
         </GridLayout>
 
