@@ -18,7 +18,6 @@ class CalculatorActivity : AppCompatActivity() {
         binding.userId = userId
         binding.userPw = userPw
         binding.operator = "+"
-        binding.result = "0"
 
         binding.addButton.setOnClickListener {
             calculate("+")
