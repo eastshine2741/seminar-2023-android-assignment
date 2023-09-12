@@ -17,12 +17,12 @@ class MainActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener {
             if (binding.pwEdittext.text.toString().length < 5) {
                 Toast.makeText(this, "유효하지 않은 비밀번호입니다", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            } else {
+                val intent = Intent(this, CalculatorActivity::class.java)
+                intent.putExtra("id", binding.idEdittext.text.toString())
+                intent.putExtra("pw", binding.pwEdittext.text.toString())
+                startActivity(intent)
             }
-            val intent = Intent(this, CalculatorActivity::class.java)
-            intent.putExtra("id", binding.idEdittext.text.toString())
-            intent.putExtra("pw", binding.pwEdittext.text.toString())
-            startActivity(intent)
         }
     }
 }
