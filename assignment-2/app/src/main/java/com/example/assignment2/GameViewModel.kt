@@ -47,12 +47,12 @@ class GameViewModel: ViewModel() {
     }
 
     private fun isWin(board: Array<Array<SquareState>>, player: SquareState): Boolean {
-        return board.all { row ->
+        return board.any { row ->
             row.all {
                 it == player
             }
         } ||
-        board.indices.map { colIdx -> board.map { it[colIdx] } }.all { col ->
+        board.indices.map { colIdx -> board.map { it[colIdx] } }.any { col ->
             col.all {
                 it == player
             }
@@ -67,5 +67,11 @@ class GameViewModel: ViewModel() {
 
     private fun isDraw(board: Array<Array<SquareState>>): Boolean {
         return board.flatten().all { it != SquareState.EMPTY}
+    }
+
+    suspend fun moveBackToState(turn: Int) {
+        _gameHistory.emit(
+            _gameHistory.value.subList(0, turn + 1)
+        )
     }
 }

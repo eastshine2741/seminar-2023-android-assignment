@@ -47,7 +47,13 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             viewModel.gameHistory.collect {
-                binding.gameHistoryList.swapAdapter(HistoryListAdapter(it), false)
+                val adapter = HistoryListAdapter(it) {
+                    lifecycleScope.launch {
+                        viewModel.moveBackToState(it)
+                        binding.root.closeDrawer(binding.drawer)
+                    }
+                }
+                binding.gameHistoryList.swapAdapter(adapter, false)
             }
         }
     }

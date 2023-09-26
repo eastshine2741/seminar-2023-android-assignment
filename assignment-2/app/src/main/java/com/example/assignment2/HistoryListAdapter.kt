@@ -9,7 +9,8 @@ import androidx.core.view.forEachIndexed
 import androidx.recyclerview.widget.RecyclerView
 
 class HistoryListAdapter(
-    private val dataSet: List<GameState>
+    private val dataSet: List<GameState>,
+    val onReturnClicked: (Int) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
@@ -29,7 +30,7 @@ class HistoryListAdapter(
             }
             turnText.text = turnText.context.getString(R.string.turn_text, data.turn)
             returnButton.setOnClickListener {
-
+                onReturnClicked(data.turn)
             }
         }
     }

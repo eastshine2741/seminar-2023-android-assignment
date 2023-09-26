@@ -4,7 +4,7 @@ data class GameState (
     val board: Array<Array<SquareState>> = Array(3) { Array(3) { SquareState.EMPTY } },
     val summary: StateSummary = StateSummary.PLAYING,
     val player: SquareState = SquareState.O,
-    val turn: Int = 1
+    val turn: Int = 0
 ) {
     enum class StateSummary {
         PLAYING,
