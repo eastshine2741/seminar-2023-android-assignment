@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Assignment2</string>
+    <string name="return_button">되돌아가기</string>
+    <string name="turn_text">%d턴</string>
+    <string name="summary_playing_text">%s의 차례입니다</string>
+    <string name="summary_draw_text">무승부입니다</string>
+    <string name="summary_o_win">O의 승리입니다</string>
+    <string name="summary_x_win">X의 승리입니다</string>
 </resources>
