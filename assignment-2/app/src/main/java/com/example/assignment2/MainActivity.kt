@@ -56,5 +56,11 @@ class MainActivity : AppCompatActivity() {
                 binding.gameHistoryList.swapAdapter(adapter, false)
             }
         }
+
+        binding.initializeButton.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.moveBackToState(0)
+            }
+        }
     }
 }

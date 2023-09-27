@@ -7,4 +7,5 @@
     <string name="summary_o_win">O의 승리입니다</string>
     <string name="summary_x_win">X의 승리입니다</string>
     <string name="history_list_start_button">시작하기</string>
+    <string name="initialize_button">초기화</string>
 </resources>

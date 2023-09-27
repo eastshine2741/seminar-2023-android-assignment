@@ -29,6 +29,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 tools:text="O의 차례입니다" />
+            <TextView
+                android:id="@+id/initialize_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/initialize_button"
+                android:background="@color/gray"
+                android:padding="10dp"/>
         </LinearLayout>
 
         <GridLayout
