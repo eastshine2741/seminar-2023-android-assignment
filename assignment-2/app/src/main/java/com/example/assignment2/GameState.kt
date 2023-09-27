@@ -30,4 +30,11 @@ data class GameState (
         result = 31 * result + summary.hashCode()
         return result
     }
+
+    fun isBoardEmpty(): Boolean =
+        board.all { row ->
+            row.all {
+                it == SquareState.EMPTY
+            }
+        }
 }
