@@ -1,5 +1,7 @@
 package com.jutak.assignment3.di
 
+import android.util.Log
+import com.jutak.assignment3.network.MainRestApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -7,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -15,7 +18,12 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class NetworkModule {
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder().build()
+        return OkHttpClient.Builder()
+            .addInterceptor(
+                HttpLoggingInterceptor { log ->
+                    Log.d("okhttp3", "HTTP: $log")
+                }.setLevel(HttpLoggingInterceptor.Level.BODY)
+            ).build()
     }
 
     @Provides
@@ -35,4 +43,7 @@ class NetworkModule {
     }
 
     @Provides
+    fun provideRestApi(retrofit: Retrofit): MainRestApi {
+        return retrofit.create(MainRestApi::class.java)
+    }
 }

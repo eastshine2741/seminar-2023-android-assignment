@@ -6,11 +6,11 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface MainRestApi {
-    @GET("/word_lists")
-    fun _getWordLists(): GetWordListsResponse
+    @GET("/myapp/v1/word_lists")
+    suspend fun _getWordLists(): GetWordListsResponse
 
-    @GET("/word_list/{id}")
-    fun _getWordList(
+    @GET("/myapp/v1/word_list/{id}")
+    suspend fun _getWordList(
         @Path("id") id: Int
     ): GetWordListResponse
 }
