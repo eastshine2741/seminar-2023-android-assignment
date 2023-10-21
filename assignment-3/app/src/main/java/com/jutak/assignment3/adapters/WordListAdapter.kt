@@ -6,14 +6,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jutak.assignment3.data.vo.BriefWordListVO
 import com.jutak.assignment3.databinding.WordlistItemBinding
 
-class WordListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class WordListAdapter(
+    val onClickItem: (Int) -> Unit,
+): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var dataSet: List<BriefWordListVO> = emptyList()
 
     class WordListViewHolder(private val binding: WordlistItemBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(creator: String, title: String) {
-            binding.wordlistCreator.text = creator
-            binding.wordlistTitle.text = title
+        fun bind(item: BriefWordListVO, onClickItem: (Int) -> Unit) {
+            binding.wordlistCreator.text = item.owner
+            binding.wordlistTitle.text = item.name
+            binding.root.setOnClickListener { onClickItem(item.id) }
         }
     }
 
@@ -29,6 +32,6 @@ class WordListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as WordListViewHolder).bind(dataSet[position].owner, dataSet[position].name)
+        (holder as WordListViewHolder).bind(dataSet[position], onClickItem)
     }
 }

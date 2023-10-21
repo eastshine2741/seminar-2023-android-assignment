@@ -1,6 +1,6 @@
-package com.jutak.assignment3
+package com.jutak.assignment3.viewmodels
 
-import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +16,7 @@ class MainViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _wordLists = MutableLiveData<List<BriefWordListVO>>(emptyList())
-    val wordLists get() = _wordLists
+    val wordLists: LiveData<List<BriefWordListVO>> get() = _wordLists
 
     init {
         getWordLists()
@@ -25,7 +25,6 @@ class MainViewModel @Inject constructor(
     fun getWordLists() {
         viewModelScope.launch {
             _wordLists.value = restApi._getWordLists()
-            Log.d("aaaa", _wordLists.value!!.size.toString())
         }
     }
 }

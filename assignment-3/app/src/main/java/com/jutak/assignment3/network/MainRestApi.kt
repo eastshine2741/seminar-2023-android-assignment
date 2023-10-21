@@ -10,7 +10,7 @@ interface MainRestApi {
     suspend fun _getWordLists(): GetWordListsResponse
 
     @GET("/myapp/v1/word_list/{id}")
-    suspend fun _getWordList(
+    suspend fun _getWordListDetail(
         @Path("id") id: Int
     ): GetWordListResponse
 }
