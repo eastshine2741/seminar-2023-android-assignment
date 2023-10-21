@@ -6,14 +6,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jutak.assignment3.data.vo.WordVO
 import com.jutak.assignment3.databinding.WordItemBinding
 
-class WordAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class WordAdapter(
+    private val onItemClick: (WordVO) -> Unit,
+): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var dataSet: List<WordVO> = emptyList()
 
     class WordViewHolder(private val binding: WordItemBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: WordVO) {
+        fun bind(item: WordVO, onItemClick: (WordVO) -> Unit) {
             binding.spell.text = item.spell
             binding.meaning.text = item.meaning
+            binding.root.setOnClickListener {
+                onItemClick(item)
+            }
         }
     }
 
@@ -30,6 +35,6 @@ class WordAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as WordViewHolder).bind(dataSet[position])
+        (holder as WordViewHolder).bind(dataSet[position], onItemClick)
     }
 }
