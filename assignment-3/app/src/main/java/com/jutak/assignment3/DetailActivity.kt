@@ -1,6 +1,9 @@
 package com.jutak.assignment3
 
 import android.os.Bundle
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import com.jutak.assignment3.adapters.WordAdapter
 import com.jutak.assignment3.data.vo.WordVO
 import com.jutak.assignment3.databinding.ActivityDetailBinding
+import com.jutak.assignment3.databinding.DialogAddWordBinding
+import com.jutak.assignment3.databinding.DialogDeleteWordlistBinding
+import com.jutak.assignment3.databinding.DialogPasswordBinding
 import com.jutak.assignment3.databinding.DialogWordDetailBinding
 import com.jutak.assignment3.network.launchSuspendApi
 import com.jutak.assignment3.viewmodels.DetailViewModel
@@ -47,6 +53,28 @@ class DetailActivity : AppCompatActivity() {
                 viewModel.getWordListDetail()
             }
         }
+
+        binding.editButton.setOnClickListener {
+            showEditDialog()
+        }
+
+        viewModel.hasPermission.observe(this) { hasPermission ->
+            if (hasPermission) {
+                binding.editGroup.visibility = VISIBLE
+                binding.editButton.visibility = GONE
+            } else {
+                binding.editGroup.visibility = GONE
+                binding.editButton.visibility = VISIBLE
+            }
+        }
+
+        binding.addButton.setOnClickListener {
+            showAddWordDialog()
+        }
+
+        binding.deleteButton.setOnClickListener {
+            showDeleteDialog()
+        }
     }
 
     fun showWordDialog(item: WordVO) {
@@ -62,6 +90,86 @@ class DetailActivity : AppCompatActivity() {
             sentence.text = item.sentence
             dismissButton.setOnClickListener {
                 dialog.dismiss()
+            }
+        }
+        dialog.show()
+    }
+
+    fun showEditDialog() {
+        val dialogBinding = DialogPasswordBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogBinding.root)
+            .create()
+        dialogBinding.run {
+            dismissButton.setOnClickListener {
+                dialog.dismiss()
+            }
+            submitButton.setOnClickListener {
+                lifecycleScope.launch {
+                    launchSuspendApi(this@DetailActivity) {
+                        viewModel.authenticate(
+                            password = passwordEdittext.text.toString(),
+                            onSuccess = {
+                                dialog.dismiss()
+                            },
+                            onFailure = {
+                                Toast.makeText(this@DetailActivity, "잘못된 비밀번호입니다.", Toast.LENGTH_SHORT).show()
+                            }
+                        )
+                    }
+                }
+            }
+        }
+        dialog.show()
+    }
+
+    fun showDeleteDialog() {
+        val dialogBinding = DialogDeleteWordlistBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogBinding.root)
+            .create()
+        dialogBinding.run {
+            dismissButton.setOnClickListener {
+                dialog.dismiss()
+            }
+            submitButton.setOnClickListener {
+                lifecycleScope.launch {
+                    launchSuspendApi(this@DetailActivity) {
+                        viewModel.deleteWordList()
+                        dialog.dismiss()
+                        setResult(RESULT_OK)
+                        finish()
+                    }
+                }
+            }
+        }
+        dialog.show()
+    }
+
+    fun showAddWordDialog() {
+        val dialogBinding = DialogAddWordBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogBinding.root)
+            .create()
+        dialogBinding.run {
+            dismissButton.setOnClickListener {
+                dialog.dismiss()
+            }
+            submitButton.setOnClickListener {
+                lifecycleScope.launch {
+                    launchSuspendApi(this@DetailActivity) {
+                        viewModel.addWordToWordList(
+                            spell = dialogBinding.spellEdittext.text.toString(),
+                            meaning = dialogBinding.meaningEdittext.text.toString(),
+                            synonym = dialogBinding.synonymEdittext.text.toString(),
+                            antonym = dialogBinding.antonymEdittext.text.toString(),
+                            sentence = dialogBinding.sentenceEdittext.text.toString(),
+                            onSuccess = {
+                                dialog.dismiss()
+                            }
+                        )
+                    }
+                }
             }
         }
         dialog.show()

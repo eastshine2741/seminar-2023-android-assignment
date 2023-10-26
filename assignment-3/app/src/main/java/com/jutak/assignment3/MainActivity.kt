@@ -11,11 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import com.jutak.assignment3.adapters.WordListAdapter
 import com.jutak.assignment3.databinding.ActivityMainBinding
 import com.jutak.assignment3.databinding.DialogCreateWordlistBinding
-import com.jutak.assignment3.databinding.DialogWordDetailBinding
 import com.jutak.assignment3.network.launchSuspendApi
 import com.jutak.assignment3.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -31,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) {
+            if (it.resultCode == RESULT_OK) {       // wordlist deleted
                 lifecycleScope.launch {
                     launchSuspendApi(this@MainActivity) {
                         viewModel.getWordLists()
