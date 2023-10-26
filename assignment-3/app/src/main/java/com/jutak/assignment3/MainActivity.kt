@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.jutak.assignment3.adapters.WordListAdapter
 import com.jutak.assignment3.databinding.ActivityMainBinding
 import com.jutak.assignment3.databinding.DialogCreateWordlistBinding
-import com.jutak.assignment3.network.launchSuspendApi
+import com.jutak.assignment3.network.launchNetworkApi
 import com.jutak.assignment3.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {       // wordlist deleted
                 lifecycleScope.launch {
-                    launchSuspendApi(this@MainActivity) {
+                    launchNetworkApi(this@MainActivity) {
                         viewModel.getWordLists()
                     }
                 }
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            launchSuspendApi(this@MainActivity) {
+            launchNetworkApi(this@MainActivity) {
                 viewModel.getWordLists()
             }
         }
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         dialogBinding.run {
             submitButton.setOnClickListener {
                 lifecycleScope.launch {
-                    launchSuspendApi(this@MainActivity) {
+                    launchNetworkApi(this@MainActivity) {
                         viewModel.createNewWordList(
                             name = nameEdittext.text.toString(),
                             owner = ownerEdittext.text.toString(),

@@ -15,7 +15,7 @@ import com.jutak.assignment3.databinding.DialogAddWordBinding
 import com.jutak.assignment3.databinding.DialogDeleteWordlistBinding
 import com.jutak.assignment3.databinding.DialogPasswordBinding
 import com.jutak.assignment3.databinding.DialogWordDetailBinding
-import com.jutak.assignment3.network.launchSuspendApi
+import com.jutak.assignment3.network.launchNetworkApi
 import com.jutak.assignment3.viewmodels.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -49,7 +49,7 @@ class DetailActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            launchSuspendApi(this@DetailActivity) {
+            launchNetworkApi(this@DetailActivity) {
                 viewModel.getWordListDetail()
             }
         }
@@ -106,7 +106,7 @@ class DetailActivity : AppCompatActivity() {
             }
             submitButton.setOnClickListener {
                 lifecycleScope.launch {
-                    launchSuspendApi(this@DetailActivity) {
+                    launchNetworkApi(this@DetailActivity) {
                         viewModel.authenticate(
                             password = passwordEdittext.text.toString(),
                             onSuccess = {
@@ -134,7 +134,7 @@ class DetailActivity : AppCompatActivity() {
             }
             submitButton.setOnClickListener {
                 lifecycleScope.launch {
-                    launchSuspendApi(this@DetailActivity) {
+                    launchNetworkApi(this@DetailActivity) {
                         viewModel.deleteWordList()
                         dialog.dismiss()
                         setResult(RESULT_OK)
@@ -157,7 +157,7 @@ class DetailActivity : AppCompatActivity() {
             }
             submitButton.setOnClickListener {
                 lifecycleScope.launch {
-                    launchSuspendApi(this@DetailActivity) {
+                    launchNetworkApi(this@DetailActivity) {
                         viewModel.addWordToWordList(
                             spell = dialogBinding.spellEdittext.text.toString(),
                             meaning = dialogBinding.meaningEdittext.text.toString(),
