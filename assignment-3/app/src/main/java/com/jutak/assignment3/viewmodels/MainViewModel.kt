@@ -8,7 +8,9 @@ import com.jutak.assignment3.data.vo.BriefWordListVO
 import com.jutak.assignment3.network.MainRestApi
 import com.jutak.assignment3.network.dto.PostWordListParams
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,12 +22,16 @@ class MainViewModel @Inject constructor(
     val wordLists: LiveData<List<BriefWordListVO>> get() = _wordLists
 
     suspend fun getWordLists() {
-        _wordLists.value = restApi._getWordLists()
+        withContext(Dispatchers.Main) {
+            _wordLists.value = restApi._getWordLists()
+        }
     }
 
     suspend fun createNewWordList(name: String, owner: String, password: String) {
-        if (name.isNotEmpty() && owner.isNotEmpty() && password.isNotEmpty()) {
-            _wordLists.value = restApi._postWordList(PostWordListParams(name, owner, password))
+        withContext(Dispatchers.Main) {
+            if (name.isNotEmpty() && owner.isNotEmpty() && password.isNotEmpty()) {
+                _wordLists.value = restApi._postWordList(PostWordListParams(name, owner, password))
+            }
         }
     }
 }

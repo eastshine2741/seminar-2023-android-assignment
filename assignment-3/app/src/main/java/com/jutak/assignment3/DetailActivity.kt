@@ -4,12 +4,15 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.jutak.assignment3.adapters.WordAdapter
 import com.jutak.assignment3.data.vo.WordVO
 import com.jutak.assignment3.databinding.ActivityDetailBinding
 import com.jutak.assignment3.databinding.DialogWordDetailBinding
+import com.jutak.assignment3.network.launchSuspendApi
 import com.jutak.assignment3.viewmodels.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -37,6 +40,12 @@ class DetailActivity : AppCompatActivity() {
                 notifyDataSetChanged()
             }
             binding.appbarTitle.text = it.name
+        }
+
+        lifecycleScope.launch {
+            launchSuspendApi(this@DetailActivity) {
+                viewModel.getWordListDetail()
+            }
         }
     }
 

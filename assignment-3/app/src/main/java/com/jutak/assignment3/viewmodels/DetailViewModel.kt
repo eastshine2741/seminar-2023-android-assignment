@@ -10,7 +10,9 @@ import com.jutak.assignment3.network.MainRestApi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailViewModel @AssistedInject constructor(
     private val restApi: MainRestApi,
@@ -20,13 +22,9 @@ class DetailViewModel @AssistedInject constructor(
     private val _wordListDetail = MutableLiveData<WordListVO>()
     val wordListDetail: LiveData<WordListVO> get() = _wordListDetail
 
-    init {
-        getWordListDetail(wordListId)
-    }
-
-    fun getWordListDetail(id: Int) {
-         viewModelScope.launch {
-             _wordListDetail.value = restApi._getWordListDetail(id)
+    suspend fun getWordListDetail() {
+         withContext(Dispatchers.Main) {
+             _wordListDetail.value = restApi._getWordListDetail(wordListId)
          }
     }
 
