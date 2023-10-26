@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jutak.assignment3.data.vo.BriefWordListVO
 import com.jutak.assignment3.network.MainRestApi
+import com.jutak.assignment3.network.dto.PostWordListParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,13 +19,13 @@ class MainViewModel @Inject constructor(
     private val _wordLists = MutableLiveData<List<BriefWordListVO>>(emptyList())
     val wordLists: LiveData<List<BriefWordListVO>> get() = _wordLists
 
-    init {
-        getWordLists()
+    suspend fun getWordLists() {
+        _wordLists.value = restApi._getWordLists()
     }
 
-    fun getWordLists() {
-        viewModelScope.launch {
-            _wordLists.value = restApi._getWordLists()
+    suspend fun createNewWordList(name: String, owner: String, password: String) {
+        if (name.isNotEmpty() && owner.isNotEmpty() && password.isNotEmpty()) {
+            _wordLists.value = restApi._postWordList(PostWordListParams(name, owner, password))
         }
     }
 }

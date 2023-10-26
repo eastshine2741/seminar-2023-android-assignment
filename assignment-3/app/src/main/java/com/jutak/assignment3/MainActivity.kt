@@ -5,11 +5,18 @@ import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.jutak.assignment3.adapters.WordListAdapter
 import com.jutak.assignment3.databinding.ActivityMainBinding
+import com.jutak.assignment3.databinding.DialogCreateWordlistBinding
+import com.jutak.assignment3.databinding.DialogWordDetailBinding
+import com.jutak.assignment3.network.launchSuspendApi
 import com.jutak.assignment3.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -25,7 +32,11 @@ class MainActivity : AppCompatActivity() {
 
         activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
-                viewModel.getWordLists()
+                lifecycleScope.launch {
+                    launchSuspendApi(this@MainActivity) {
+                        viewModel.getWordLists()
+                    }
+                }
             }
         }
 
@@ -42,5 +53,40 @@ class MainActivity : AppCompatActivity() {
                 notifyDataSetChanged()
             }
         }
+
+        binding.addButton.setOnClickListener {
+            showCreateWordListDialog()
+        }
+
+        lifecycleScope.launch {
+            launchSuspendApi(this@MainActivity) {
+                viewModel.getWordLists()
+            }
+        }
+    }
+
+    fun showCreateWordListDialog() {
+        val dialogBinding = DialogCreateWordlistBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogBinding.root)
+            .create()
+        dialogBinding.run {
+            submitButton.setOnClickListener {
+                lifecycleScope.launch {
+                    launchSuspendApi(this@MainActivity) {
+                        viewModel.createNewWordList(
+                            name = nameEdittext.text.toString(),
+                            owner = ownerEdittext.text.toString(),
+                            password = passwordEdittext.text.toString()
+                        )
+                    }
+                    dialog.dismiss()
+                }
+            }
+            dismissButton.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+        dialog.show()
     }
 }
