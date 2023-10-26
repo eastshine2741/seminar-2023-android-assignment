@@ -23,14 +23,14 @@ class MainViewModel @Inject constructor(
 
     suspend fun getWordLists() {
         withContext(Dispatchers.Main) {
-            _wordLists.value = restApi._getWordLists()
+            _wordLists.value = restApi._getWordLists().reversed()
         }
     }
 
     suspend fun createNewWordList(name: String, owner: String, password: String) {
         withContext(Dispatchers.Main) {
             if (name.isNotEmpty() && owner.isNotEmpty() && password.isNotEmpty()) {
-                _wordLists.value = restApi._postWordList(PostWordListParams(name, owner, password))
+                _wordLists.value = restApi._postWordList(PostWordListParams(name, owner, password)).reversed()
             }
         }
     }
